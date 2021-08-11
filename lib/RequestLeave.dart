@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:leave_request/components.dart';
 
 class RequestLeave extends StatefulWidget {
@@ -15,8 +16,9 @@ class _RequestLeaveState extends State<RequestLeave> {
   final TextEditingController reportBackDate = new TextEditingController();
   final TextEditingController dutyDelegatee = new TextEditingController();
   DateTime selectedDate = DateTime.now();
-  DateTime startHolder = DateTime.now();
-  DateTime endHolder = DateTime.now();
+
+  DateTime startHolder;
+  DateTime endHolder;
 
   int daysDifference;
 
@@ -95,34 +97,23 @@ class _RequestLeaveState extends State<RequestLeave> {
   int daysBetween(DateTime from, DateTime to) {
     from = DateTime(from.year, from.month, from.day);
     to = DateTime(to.year, to.month, to.day);
-    return (to
-        .difference(from)
-        .inHours / 24).round();
+    return
+      ((to
+          .difference(from)
+          .inHours / 24)).round();
   }
 
   @override
   Widget build(BuildContext context) {
     setState(() {
-      numberOfDays.value = TextEditingValue(
+      numberOfDays.value = startHolder == null || endHolder == null
+          ? TextEditingValue(
+          text: daysBetween(DateTime.now(), DateTime.now()).toString())
+          : TextEditingValue(
           text: daysBetween(startHolder, endHolder).toString());
     });
 
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   title: Text(
-      //     'Request Leave',
-      //     style: TextStyle(
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   leading: AppBarIcon(
-      //     icon: Icons.arrow_back,
-      //     onPressed: () {
-      //       Navigator.of(context).pop();
-      //     },
-      //   ),
-      // ),
       appBar: MyAppBar(
         title: 'Request Leave',
       ),
@@ -165,95 +156,138 @@ class _RequestLeaveState extends State<RequestLeave> {
 
   Widget leaveDetailsSection(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8.0),
-      // decoration: BoxDecoration(
-      //   border: Border.all(color: Theme.of(context).backgroundColor),
-      // ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(2.0),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () => _pickDate(context, startDate),
-              child: AbsorbPointer(
-                child: EntryField(
-                  title: 'Leave Start Date',
-                  err: 'Enter StartDate',
-                  type: TextInputType.text,
-                  controller: startDate,
-                  isPassword: false,
-                  icon: Icons.calendar_today_outlined,
-                  borderColor: Colors.transparent,
+            buildNeuCard(
+              context,
+              GestureDetector(
+                onTap: () => _pickDate(context, startDate),
+                child: AbsorbPointer(
+                  child: EntryField(
+                    title: 'Leave Start Date',
+                    err: 'Enter StartDate',
+                    type: TextInputType.text,
+                    controller: startDate,
+                    isPassword: false,
+                    icon: Icons.calendar_today_outlined,
+                    borderColor: Colors.transparent,
+                    enabled: false,
+                  ),
                 ),
               ),
             ),
             SizedBox(
               height: 12,
             ),
-            GestureDetector(
-              onTap: () => _pickDate(context, endDate),
-              child: AbsorbPointer(
-                child: EntryField(
-                  title: 'Leave End Date',
-                  err: 'Enter end date',
-                  // validator: (val) => {
-                  //   endDate.value
-                  //           .toString()
-                  //           .compareTo(startDate.value.toString()) >
-                  //       0
-                  // },
-                  type: TextInputType.text,
-                  controller: endDate,
-                  isPassword: false,
-                  icon: Icons.calendar_today_outlined,
-                  borderColor: Colors.transparent,
+            buildNeuCard(
+              context,
+              GestureDetector(
+                onTap: () => _pickDate(context, endDate),
+                child: AbsorbPointer(
+                  child: EntryField(
+                    title: 'Leave End Date',
+                    err: 'Enter end date',
+                    type: TextInputType.text,
+                    controller: endDate,
+                    isPassword: false,
+                    icon: Icons.calendar_today_outlined,
+                    borderColor: Colors.transparent,
+                    enabled: false,
+                  ),
                 ),
               ),
             ),
             SizedBox(
               height: 12,
             ),
-            EntryField(
-              title: 'Number of days applied for',
-              err: 'Enter Number of days',
-              enabled: false,
-              type: TextInputType.number,
-              controller: numberOfDays,
-              isPassword: false,
-              icon: Icons.format_list_numbered,
-              borderColor: Colors.transparent,
+            buildNeuCard(
+              context,
+              EntryField(
+                title: 'Number of days applied for',
+                err: 'Enter Number of days',
+                enabled: false,
+                controller: numberOfDays,
+                isPassword: false,
+                icon: Icons.format_list_numbered,
+                borderColor: Colors.transparent,
+              ),
             ),
             SizedBox(
               height: 12,
             ),
-            GestureDetector(
-              onTap: () => _pickDate(context, reportBackDate),
-              child: AbsorbPointer(
-                child: EntryField(
-                  title: 'Report Back Date',
-                  err: 'Enter report back date',
-                  type: TextInputType.text,
-                  controller: reportBackDate,
-                  isPassword: false,
-                  icon: Icons.calendar_today,
-                  borderColor: Colors.transparent,
+            buildNeuCard(
+              context,
+              GestureDetector(
+                onTap: () => _pickDate(context, reportBackDate),
+                child: AbsorbPointer(
+                  child: EntryField(
+                    title: 'Report Back Date',
+                    err: 'Enter report back date',
+                    type: TextInputType.text,
+                    controller: reportBackDate,
+                    isPassword: false,
+                    icon: Icons.calendar_today,
+                    borderColor: Colors.transparent,
+                    enabled: false,
+                  ),
                 ),
               ),
             ),
             SizedBox(
               height: 12,
             ),
-            EntryField(
-              title: 'Duties Delegated To',
-              err: 'Enter delegatee',
-              type: TextInputType.phone,
-              controller: dutyDelegatee,
-              isPassword: false,
-              icon: Icons.perm_identity,
-              borderColor: Colors.transparent,
+            buildNeuCard(
+              context,
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          semanticLabel: "Select Colleague",
+                          content: Container(
+                            height: 300,
+                          ),
+                        );
+                      });
+                },
+                child: AbsorbPointer(
+                  child: EntryField(
+                    title: 'Duties Delegated To',
+                    err: 'Enter delegatee',
+                    type: TextInputType.phone,
+                    controller: dutyDelegatee,
+                    isPassword: false,
+                    icon: Icons.perm_identity,
+                    borderColor: Colors.transparent,
+                    enabled: false,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Padding buildNeuCard(BuildContext context, child) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      child: Neumorphic(
+        style: NeumorphicStyle(
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(5)),
+          depth: -3,
+          intensity: 0.9,
+          lightSource: LightSource.topLeft,
+          border: NeumorphicBorder(color: Colors.white.withAlpha(20)),
+          color: Theme
+              .of(context)
+              .scaffoldBackgroundColor,
+        ),
+        child: child,
       ),
     );
   }

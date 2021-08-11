@@ -1,13 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leave_request/components.dart';
 
 class AnimatedPage extends StatefulWidget {
-  final List<Widget> children;
+  final children;
   final String pageName;
   final Function themeOnPressed;
   final themeIcon;
 
-  const AnimatedPage({Key key, this.children, this.pageName,this.themeOnPressed,this.themeIcon}) : super(key: key);
+  const AnimatedPage(
+      {Key key,
+      this.children,
+      this.pageName,
+      this.themeOnPressed,
+      this.themeIcon})
+      : super(key: key);
 
   @override
   _AnimatedPageState createState() => _AnimatedPageState();
@@ -28,7 +35,7 @@ class _AnimatedPageState extends State<AnimatedPage> {
             yOffset = 0;
             isDrawerOpen = false;
           });
-        } else if (drag.delta.dx > 50) {
+        } else if (drag.delta.dx > 5) {
           setState(() {
             xOffset = 320;
             yOffset = 80;
@@ -36,11 +43,12 @@ class _AnimatedPageState extends State<AnimatedPage> {
           });
         }
       },
-      child: AnimatedContainer(height: MediaQuery.of(context).size.height,
+      child: AnimatedContainer(
+        height: MediaQuery.of(context).size.height,
         transform: Matrix4.translationValues(xOffset, yOffset, 0)
           ..scale(isDrawerOpen ? 0.85 : 1.00)
           ..rotateZ(isDrawerOpen ? -50 : 0),
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 350),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: isDrawerOpen
@@ -59,7 +67,7 @@ class _AnimatedPageState extends State<AnimatedPage> {
                 themeIcon: widget.themeIcon,
                 onIconTapToOpenDrawer: () {
                   setState(() {
-                    xOffset = 320;
+                    xOffset = 330;
                     yOffset = 80;
                     isDrawerOpen = true;
                   });
@@ -72,11 +80,7 @@ class _AnimatedPageState extends State<AnimatedPage> {
                   });
                 },
               ),
-              ListView(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: widget.children,
-              ),
+              widget.children,
             ],
           ),
         ),

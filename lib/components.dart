@@ -81,6 +81,7 @@ class EntryField extends StatelessWidget {
   final onChanged;
   final enabled;
   final validator;
+  final onSubmit;
 
   EntryField(
       {Key key,
@@ -94,11 +95,13 @@ class EntryField extends StatelessWidget {
       this.borderColor,
       this.onChanged,
       this.enabled,
-      this.validator});
+      this.validator,
+      this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        onFieldSubmitted: onSubmit,
         keyboardType: type,
         validator:
             validator == null ? (val) => val.isEmpty ? err : null : validator,
@@ -156,27 +159,13 @@ class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () async {
-      //   if (formKey.currentState.validate()) {
-      //     String email = emailController.text;
-      //     String password = passwordController.text;
-      //
-      //     dynamic result = await APICalls().signInEmployee(email, password);
-
-      //     if (result == null) {
-      //       setState(() {
-      //         error = 'Could not sign in..';
-      //       });
-      //     }
-      //   }
-      // },
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
           color: color == null ? Theme.of(context).buttonColor : color,
         ),
-        height: 42,
+        height: 45,
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -337,7 +326,8 @@ class MainPageAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.isDrawerOpen,
       this.onIconTapToCloseDrawer,
       this.onIconTapToOpenDrawer,
-      this.themeOnPressed,this.themeIcon});
+      this.themeOnPressed,
+      this.themeIcon});
 
   @override
   Size get preferredSize => const Size.fromHeight(65);
@@ -346,6 +336,7 @@ class MainPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
+      elevation: 0,
       title: Text(
         title,
         style: TextStyle(
@@ -354,7 +345,7 @@ class MainPageAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: isDrawerOpen
           ? AppBarIcon(
-              icon:Icons.arrow_back_ios_outlined,
+              icon: Icons.arrow_back_ios_outlined,
               onPressed: onIconTapToCloseDrawer,
             )
           : AppBarIcon(
@@ -363,11 +354,60 @@ class MainPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
       actions: [
         AppBarIcon(onPressed: () {}, icon: Icons.notifications_none_rounded),
-        AppBarIcon(
-          onPressed: themeOnPressed,
-          icon: themeIcon
-        ),
+        AppBarIcon(onPressed: themeOnPressed, icon: themeIcon),
       ],
     );
+  }
+}
+
+class NeuCircles extends StatelessWidget {
+  final shape;
+  final depth;
+  final color;
+
+  NeuCircles({this.shape, this.depth, this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Neumorphic(
+        style: NeumorphicStyle(
+          shape: shape,
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(100)),
+          depth: depth,
+          lightSource: LightSource.topLeft,
+          color: color,
+        ),
+        child: Container(
+          height: 200,
+          width: 200,
+          child: Neumorphic(
+            style: NeumorphicStyle(
+              shape: shape,
+              boxShape:
+                  NeumorphicBoxShape.roundRect(BorderRadius.circular(100)),
+              depth: depth - 12,
+              lightSource: LightSource.topLeft,
+              color: color,
+            ),
+            child: Container(
+              height: 100,
+              width: 100,
+              child: Neumorphic(
+                style: NeumorphicStyle(
+                  shape: shape,
+                  boxShape:
+                      NeumorphicBoxShape.roundRect(BorderRadius.circular(100)),
+                  depth: depth - 10,
+                  lightSource: LightSource.topLeft,
+                  color: color,
+                ),
+                child: Container(
+                  height: 80,
+                  width: 80,
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }

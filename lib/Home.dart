@@ -36,51 +36,57 @@ class _HomeState extends State<Home> {
               themeIcon: notifier.darkTheme
                   ? Icons.wb_sunny_outlined
                   : Icons.nightlight_round,
-              pageName: 'Dashboard',
-              children: [
+              pageName: 'Home',
+              children: 
                 Stack(
                   children: [
                     Container(
                       height: 100,
                       color: Theme.of(context).primaryColor,
                     ),
-                    employeeDetailsCard(context),
+                    Column(
+                      children: [
+                        employeeDetailsCard(context),
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(top: 15, left: 5, right: 5),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  dashboardItem(context, Icons.event_note,
+                                      RequestLeave(), 'Request Leave'),
+                                  dashboardItem(context, Icons.note_outlined,
+                                      LeavesSummary(), 'Leave Summary'),
+                                  dashboardItem(
+                                      context,
+                                      Icons.business_center_outlined,
+                                      RequestLeave(),
+                                      'My Delegations'),
+                                ],
+                              ),
+                              SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  dashboardItem(context, Icons.more_horiz_outlined,
+                                      RequestLeave(), 'More Options'),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 15, left: 5, right: 5),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          dashboardItem(context, Icons.event_note,
-                              RequestLeave(), 'Request Leave'),
-                          dashboardItem(context, Icons.note_outlined,
-                              LeavesSummary(), 'Leave Summary'),
-                          dashboardItem(
-                              context,
-                              Icons.business_center_outlined,
-                              RequestLeave(),
-                              'My Delegations'),
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          dashboardItem(context, Icons.more_horiz_outlined,
-                              RequestLeave(), 'More Options'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+
+
             ),
           ],
         ),

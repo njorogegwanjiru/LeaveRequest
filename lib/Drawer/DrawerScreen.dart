@@ -11,7 +11,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).primaryColor,
       child: Padding(
         padding: EdgeInsets.only(top: 50, left: 40, bottom: 70),
         child: Column(
@@ -19,20 +19,18 @@ class _DrawerScreenState extends State<DrawerScreen> {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    // child: Image(
-                    //   fit: BoxFit.cover,
-                    //   image: AssetImage('assets/bunny.png'),
-                    // ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/olaf.png'),
                   ),
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(
-                  'Drawer',
+                  'Jane Doe',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
@@ -44,35 +42,36 @@ class _DrawerScreenState extends State<DrawerScreen> {
             Column(
               children: [
                 DrawerItem(
+                  text: 'Home',
+                  icon: Icons.home,
+                ),
+                SizedBox(height: 20),
+                DrawerItem(
+                  text: 'My Profile',
+                  icon: Icons.person,
+                ),
+                SizedBox(height: 20),
+                DrawerItem(
                   text: 'Settings',
-                  icon: Icons.error_outline,
+                  icon: Icons.settings,
                 ),
                 SizedBox(height: 20),
                 DrawerItem(
-                  text: 'Profile',
-                  icon: Icons.person_outline,
+                  text: 'Request Leave',
+                  icon: Icons.calendar_today_outlined,
                 ),
                 SizedBox(height: 20),
                 DrawerItem(
-                  text: 'Messages',
-                  icon: Icons.chat,
+                  text: 'Leaves Summary',
+                  icon: Icons.description,
                 ),
                 SizedBox(height: 20),
                 DrawerItem(
-                  text: 'Saved',
-                  icon: Icons.bookmark_border,
+                  text: 'My Delegations',
+                  icon: Icons.business_center_outlined,
                 ),
                 SizedBox(height: 20),
-                DrawerItem(
-                  text: 'Favorites',
-                  icon: Icons.favorite_border,
-                ),
-                SizedBox(height: 20),
-                DrawerItem(
-                  text: 'Hint',
-                  icon: Icons.lightbulb_outline,
-                ),
-                SizedBox(height: 20),
+
               ],
             ),
             Row(
